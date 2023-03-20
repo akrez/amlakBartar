@@ -1,0 +1,6 @@
+{
+    "require": {
+        "respect/validation": "^2.2",
+        "smarty/smarty": "^4.3"
+    }
+}
