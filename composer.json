@@ -1,6 +1,20 @@
 {
+    "name": "anisra/amlak-bartar",
+    "autoload": {
+        "psr-4": {
+            "Anisra\\AmlakBartar\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "yaghoob-piri",
+            "email": "116443049+Saravari@users.noreply.github.com"
+        }
+    ],
     "require": {
+        "bramus/router": "~1.6",
+        "jenssegers/blade": "^1.4",
         "respect/validation": "^2.2",
-        "smarty/smarty": "^4.3"
+        "rakit/validation": "^1.4"
     }
 }
