@@ -9,20 +9,12 @@
         @include('users.messages')
         @include('users.errors')
 
-        <h4><p  style="text-align:center;">عضویت</p></h4><br>
+        <h4><p  style="text-align:center;">تغییر کلمه عبور</p></h4><br>
 
-           <form action="{{'sort'}}" method="POST">
+           <form action="{{'changepass'}}" method="POST">
 
-               <div class="form-group"  >
-                   <input type="text" class="form-control"  placeholder="نام" name="name" value="{{$name}}" >
-               </div>
-       
                <div class="form-group">
-                   <input type="email" class="form-control" placeholder="ایمیل" name="email" value="{{$email}}" >
-               </div>
-       
-               <div class="form-group">
-                   <input type="password" class="form-control" placeholder="کلمه عبور" name="password" >
+                   <input type="password" class="form-control" placeholder="کلمه عبور جدید" name="password" >
                </div>
        
                <div class="form-group">

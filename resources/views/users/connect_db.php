@@ -1,5 +1,7 @@
 <?php
 
+session_start(); 
+
 $error = 'ارتباط با دیتابیس امکانپذیر نیست';
 
 $mysql_host = 'localhost';
@@ -13,5 +15,4 @@ if(!@mysqli_connect($mysql_host, $mysql_user, $mysql_pass) || !@mysqli_select_db
     {
         die($error);
     }
-    
 ?>

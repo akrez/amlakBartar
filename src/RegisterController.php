@@ -1,11 +1,16 @@
 <?php
 namespace Anisra\AmlakBartar;
 use Jenssegers\Blade\Blade as LaravelBlade;
+use Rakit\Validation\Validator;
 
 
 class RegisterController extends HomeController
 
 {
+
+    
+
+
     public  function send_email($to,$TCode){
         
         $subject ="کد فعالسازی";
@@ -27,11 +32,16 @@ class RegisterController extends HomeController
       
 
     public function register(){
-
+        
+        $error= 0;
         $errors= 0;
         $message= 0;
 
-        $this->render('users/register',compact('errors','message'));
+        $name =''; 
+        $email ='';
+        
+
+        $this->render('users/register',compact('errors','error','message','name','email')); 
     }
 
 
@@ -39,39 +49,70 @@ class RegisterController extends HomeController
 
     public function sort(){
 
+        $error= 0;
         $errors= 0;
         $message= 0;
+
+        $name = trim($_POST['name']); 
+        $email = trim($_POST['email']);
+        
+        
+
+        $validator = new Validator;
+        $validation = $validator->validate($_POST + $_FILES,[
+                'name'           => 'required',
+                'email'          => 'required|email',
+                'password'       => 'required|min:6',
+                'password_again' => 'required|same:password'
+        ]);
+ 
+           if($validation->fails()){
+                $errors = $validation->errors();
+                $errors = $errors->firstOfAll();
+                $this->render('users/register',compact('errors','error','message','name','email')); 
+                exit; 
+            }
+            
+        
 
         global $mysql_connect;
 
         if(!empty($_POST['name']) 
-        && !empty($_POST['email']) 
-        && !empty($_POST['password']) 
-        && !empty($_POST['password_again'])){
+            && !empty($_POST['email']) 
+            && !empty($_POST['password']) 
+            && !empty($_POST['password_again'])){
 
-            $name=$_POST['name']; 
-            $email=$_POST['email'];
-            $password=$_POST['password']; 
-            $password_again=$_POST['password_again'];
-    
-            if($password != $password_again){
-                $errors='تکرار کلمه عبور همخوانی ندارد';
-                $this->render('users/register',compact('errors','message'));
-            }else {
+            $name = trim($_POST['name']); 
+            $email = trim($_POST['email']);
+            $password = trim($_POST['password']); 
+            $password_again = trim($_POST['password_again']);
+
+        if(!$this->loggedin()){
             
-                    $password= md5($password);
-                    $query = "INSERT  INTO users VALUES ('','".mysqli_real_escape_string($mysql_connect, $name)."',
-                    '".mysqli_real_escape_string($mysql_connect, $email)."',
-                    '".mysqli_real_escape_string($mysql_connect, $password)."')";
-                    mysqli_query($mysql_connect,$query);
-                    $message='ثبت نام شما با موفقیت انجام شد'; 
-                    $this->render('users/register',compact('errors','message'));
-                }
+            $password= md5($password);
+            $query = "SELECT email FROM users WHERE email='".mysqli_real_escape_string($mysql_connect, $email)."'";
+					$query_run = mysqli_query($mysql_connect, $query);
+					$query_num_rows = mysqli_num_rows($query_run);
+					if($query_num_rows>=1)
+					{
+						$error = 'این ایمیل : '.$email.' قبلا ثبت نام کرده است';
+                        $this->render('users/register',compact('errors','error','message','name','email')); 
 
-            }else {
-            $errors='فیلدهای خالی را پر کنید';
-            $this->render('users/register',compact('errors','message'));
-        }                         
+					}
+					else{
+                            $query = "INSERT  INTO users VALUES ('','".mysqli_real_escape_string($mysql_connect, $name)."',
+                            '".mysqli_real_escape_string($mysql_connect, $email)."',
+                            '".mysqli_real_escape_string($mysql_connect, $password)."')";
+                            mysqli_query($mysql_connect,$query);
+                            $message='ثبت نام شما با موفقیت انجام شد'; 
+                            $this->render('users/login_view',compact('errors','error','message'));
+                        }       
+        }else {
+            $error='شما وارد سیستم شده اید، نیازی به ثبت نام نیست';
+            $this->render('users/register',compact('errors','error','message','name','email')); 
+        }     
+    }
+                          
     }
   
 }

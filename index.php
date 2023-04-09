@@ -11,6 +11,8 @@ $app->get('/', 'LoginController@login_view');
 $app->post('/login', 'LoginController@login');
 $app->post('/password', 'LoginController@password');
 $app->get('/recoverypass', 'LoginController@recoverypass');
+$app->post('/recovery', 'LoginController@recovery');
+$app->post('/changepass', 'LoginController@changepass');
 $app->get('/home', 'LoginController@home');
 
 
@@ -18,8 +20,5 @@ $app->get('/home', 'LoginController@home');
 
 $app->get('/register', 'RegisterController@register');
 $app->post('/sort', 'RegisterController@sort');
-$app->post('/verifycode', 'RegisterController@verifycode');
-
-
 
 $app->run();

@@ -5,7 +5,8 @@
 
     <div  style="display:flex; justify-content:center;">
         <div class="container col-xs-6 col-sm-2" style="margin-top:100px; background-color:lightgrey; border-radius: 5px;">
-        @include('users.messages')
+        @include('users.errors')
+
         <p style="text-align:center;">ایمیل خود را وارد کنید</p><br>
 
              <form action="{{'login'}}" method="POST">
@@ -26,7 +27,5 @@
             <button class="btn btn-warning col-xs-3 col-sm-2"  style="text-align:center" onclick="location.href='{{'register'}}'; ">عضویت</button>
             
         </section>
-
-
 
 @endsection
