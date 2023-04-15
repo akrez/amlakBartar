@@ -4,8 +4,6 @@ namespace Anisra\AmlakBartar;
 
 use Jenssegers\Blade\Blade as LaravelBlade;
 
-
-
 class HomeController
 {
     public  function render($template, $data = [])
@@ -25,11 +23,8 @@ class HomeController
         }
     }
 
-
-
     function loggedin()
     {
-
         if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
             return true;
         } else {
@@ -37,10 +32,8 @@ class HomeController
         }
     }
 
-
     function getuserfield($field)
     {
-
         global $mysql_connect;
 
         $query = "SELECT " . $field . " FROM users WHERE id='" . $_SESSION['user_id'] . "'";
