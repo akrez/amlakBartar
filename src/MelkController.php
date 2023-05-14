@@ -13,6 +13,8 @@ class MelkController extends HomeController
         $error= 0;
         $errors= 0;
         $message= 0;
+        $owner ='';
+        $phone ='';
         $Address =''; 
         $Construction ='';
         $Meterage =''; 
@@ -20,13 +22,11 @@ class MelkController extends HomeController
         $Floors =''; 
         $units ='';
         $Floor ='';
-        $owner ='';
-        $phone ='';
-
+        
         $this->render('users/melk',compact('errors','error','message','Address','Construction','Meterage','Direction','Floors','units','Floor','owner','phone')); 
     }
 
-     public function sort(){
+    public function sort(){
 
         $error= 0;
         $errors= 0;
@@ -42,7 +42,8 @@ class MelkController extends HomeController
         $Floor = trim($_POST['Floor']); 
 
         $validator = new Validator;
-        $validation = $validator->validate($_POST + $_FILES,[        
+        $validation = $validator->validate($_POST + $_FILES,[  
+            'phone'=>'numeric'      
         ]);
         if($validation->fails()){
             $errors = $validation->errors();
@@ -85,6 +86,11 @@ class MelkController extends HomeController
                     $description = trim($_POST['description']); 
                 }else{
                     $description =""; 
+                }
+                if(!empty($_POST['location'])){
+                    $location = trim($_POST['location']); 
+                }else{
+                    $location ="";  
                 }                 
 
 
@@ -92,11 +98,13 @@ class MelkController extends HomeController
                 if($db->select("SELECT * FROM realestate WHERE Address='$Address'")){
                     $error = ' ملک  '.$Address.'  قبلا ثبت شده است';
                     $this->render('users/melk',compact('errors','error','message','Address','Construction','Meterage','Direction','Floors','units','Floor','owner','phone')); 
-                }elseif(!empty($_FILES['image']['name'])){
+                }else{
+                    $db->insert("INSERT  INTO realestate VALUES ('','$owner','$phone','$Address','$Construction','$Meterage','$Direction','$Floors','$units','$Floor','$Elevator','$Parking','$description','$Sell_rent','$location')");
+                    if(!empty($_FILES['image']['name'])){
                         $imageName = $_FILES['image']['name'];
                         $imageType = $_FILES['image']['type'];
                         $tmp_name = $_FILES['image']['tmp_name'];
-                        $location = 'images/';
+                        $dir = 'assets/images/';
                         $offset = 0;
                         while($strpos = strpos($imageName, '.', $offset))
                         {
@@ -105,12 +113,11 @@ class MelkController extends HomeController
                         }
                         if(($extension=='jpg' || $extension=='jpeg') && $imageType=='image/jpeg')
                         {
-                            if(move_uploaded_file($tmp_name, $location.$imageName))
+                            if(move_uploaded_file($tmp_name, $dir.$imageName))
                             {
-                                $db->change("INSERT  INTO realestate VALUES ('','$owner','$phone','$Address','$Construction','$Meterage','$Direction','$Floors','$units','$Floor','$Elevator','$Parking','$description','$Sell_rent')");
-                                $melk_id = $db->getField("SELECT melk_id FROM realestate WHERE Address='$Address'",'melk_id');
-                                $db->change("INSERT  INTO images VALUES ('','$melk_id','$imageName')");
-                                $db->change("INSERT  INTO location VALUES ('','$melk_id','lat','')");
+                                $row = $db->select("SELECT id FROM realestate WHERE Address='$Address'");
+                                $melk_id = $row['id'];
+                                $db->insert("INSERT  INTO images VALUES ('','$melk_id','$imageName')");
 
                                 $message='ملک شما با موفقیت ثبت شد'; 
                                 $owner ='';
@@ -129,14 +136,29 @@ class MelkController extends HomeController
                         }else{
                             $error = 'تصویر باید از نوع jpg/jpeg باشد';
                             $this->render('users/melk',compact('errors','error','message','Address','Construction','Meterage','Direction','Floors','units','Floor','owner','phone')); 
-
                         }
+               
+                    }else{
+                        $message='ملک شما با موفقیت ثبت شد'; 
+                        $owner ='';
+                        $phone ='';
+                        $Address =''; 
+                        $Construction ='';
+                        $Meterage =''; 
+                        $Direction ='';
+                        $Floors =''; 
+                        $units ='';
+                        $Floor ='';
+
+                        $this->render('users/melk',compact('errors','error','message','Address','Construction','Meterage','Direction','Floors','units','Floor','owner','phone')); 
+
+                    }
                 }
-                    
-            }else {
-                $error='لطفا فیلدهای خالی را وارد کنید';
-                $this->render('users/melk',compact('errors','error','message','Address','Construction','Meterage','Direction','Floors','units','Floor','owner','phone')); 
-            }              
+                            
+        }else {
+            $error='لطفا فیلدهای خالی را وارد کنید';
+            $this->render('users/melk',compact('errors','error','message','Address','Construction','Meterage','Direction','Floors','units','Floor','owner','phone')); 
+        }  
     }
 }
 
