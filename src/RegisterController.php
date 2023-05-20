@@ -65,7 +65,7 @@ class RegisterController extends HomeController
             $password = trim($_POST['password']); 
             $password_again = trim($_POST['password_again']);
 
-            if(!$this->loggedin()){
+            if(!$this->loggedIn()){
                 $password= md5($password);
                 $db = new DataBase;
                 if($db->select("SELECT * FROM users WHERE email='$email'")){
