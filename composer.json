@@ -2,7 +2,7 @@
     "name": "anisra/amlak-bartar",
     "autoload": {
         "psr-4": {
-            "Anisra\\AmlakBartar\\": "src/"
+            "AmlakBartar\\": "src/"
         }
     },
     "authors": [
@@ -12,9 +12,11 @@
         }
     ],
     "require": {
-        "bramus/router": "~1.6",
-        "jenssegers/blade": "^1.4",
-        "rakit/validation": "^1.4",
-        "robmorgan/phinx": "^0.13.4"
+        "bramus/router": "*",
+        "jenssegers/blade": "*",
+        "rakit/validation": "*",
+        "robmorgan/phinx": "*",
+        "illuminate/database": "^8.83",
+        "phpmailer/phpmailer": "^6.8"
     }
 }

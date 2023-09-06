@@ -15,7 +15,7 @@
                 <p style="text-align:center;">ثبت ملک جدید</p>
             </h4><br>
 
-            <form action="{{ 'melkStore' }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ 'melkUpdate' }}" method="POST" enctype="multipart/form-data">
                 <div class="form col-xs-8 col-sm-5" style="background-color:DarkGray ;">
                    
                     <div class="form-group">

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-final class RealestateTableMigraion extends AbstractMigration
+final class MelksTableMigraion extends AbstractMigration
 {
         public function up()
         {
-                $table = $this->table('realestate');
+                $table = $this->table('melks');
                 $table->addColumn('owner', 'string', ['limit' => 30, 'null' => false])
-                        ->addColumn('phone', 'integer', ['signed' => false, 'null' => false])
+                        ->addColumn('phone', 'string', ['limit' => 100, 'null' => false])
                         ->addColumn('Address', 'text', ['null' => false])
                         ->addColumn('Construction', 'integer', ['signed' => false, 'null' => false])
                         ->addColumn('Meterage', 'integer', ['signed' => false, 'null' => false])
@@ -29,6 +29,6 @@ final class RealestateTableMigraion extends AbstractMigration
         public function down()
         {
                 $this->table('images')->drop()->save();
-                $this->table('realestate')->drop()->save();
+                $this->table('melks')->drop()->save();
         }
 }

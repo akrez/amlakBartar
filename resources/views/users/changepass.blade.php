@@ -4,10 +4,14 @@
 @endsection
 
 @section('content')
+
+<section  style="display:flex; margin-top:50px; justify-content:center;">
+        @include('users.error')
+        @include('users.message')
+</section>
     <div style="display:flex; justify-content:center;">
-        <div class="form col-xs-8 col-sm-3" style="margin-top:100px; background-color:DarkGray; border-radius: 5px;">
-            @include('users.messages')
-            @include('users.errors')
+        <div class="form col-xs-8 col-sm-2" style="background-color:DarkGray; border-radius: 5px;">
+            
 
             <h4>
                 <p style="text-align:center;">تغییر کلمه عبور</p>

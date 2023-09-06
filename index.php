@@ -1,26 +1,45 @@
 <?php
 
 require __DIR__ . '/vendor/autoload.php';
-require __DIR__ .'/DataBase.php';
+require __DIR__ . '/database.php';
 
 session_start(); 
 
 $app = new \Bramus\Router\Router();
-$app->setNamespace('\Anisra\AmlakBartar');
+$app->setNamespace('\AmlakBartar');
+$app->get('/', 'HomeController@home');
+
 //routes of login
-$app->get('/', 'LoginController@loginView');
-$app->post('/login', 'LoginController@login');
-$app->get('/logOut', 'LoginController@logOut');
-$app->post('/password', 'LoginController@password');
-$app->get('/recoverypass', 'LoginController@recoveryPass');
-$app->post('/recovery', 'LoginController@recovery');
-$app->post('/changepass', 'LoginController@changePass');
-$app->get('/home', 'LoginController@home');
+$app->get('loginForm', 'AuthController@loginForm');
+$app->post('/login', 'AuthController@login');
+$app->get('/enterCode', 'AuthController@enterCode');
+$app->post('checkCode', 'AuthController@checkCode');
+$app->get('/enterPassword', 'AuthController@enterPassword');
+$app->post('checkPassword', 'AuthController@checkPassword');
+$app->get('/requestSetPass', 'AuthController@requestSetPass');
+$app->post('/resetPassword', 'AuthController@resetPassword');
+$app->get('/profile', 'AuthController@profile');
+$app->post('/profileEdit', 'AuthController@profileEdit');
+$app->get('/logOut', 'AuthController@logOut');
+
+
 //routes of register
 $app->get('/register', 'RegisterController@register');
-$app->post('/sort', 'RegisterController@sort');
+$app->post('/store', 'RegisterController@store');
+
+
+
 //routes of melk
+$app->get('/amlakbartar', 'MelkController@amlakbartar');
 $app->get('/melk', 'MelkController@melk');
-$app->post('/sortMelk', 'MelkController@sort');
+$app->get('/melkList', 'MelkController@melkList');
+$app->get('/melkEdit', 'MelkController@melkEdit');
+$app->post('/melkStore', 'MelkController@melkStore');
+$app->post('/melkUpdate', 'MelkController@melkUpdate');
+$app->get('/comments', 'MelkController@comments');
+$app->post('/commentStore', 'MelkController@commentStore');
+
+
+
 
 $app->run();

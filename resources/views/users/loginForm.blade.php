@@ -4,11 +4,16 @@
 @endsection
 
 @section('content')
-    <div style="display:flex; justify-content:center;">
-        <div class="col-xs-6 col-sm-3" style="margin-top:100px; background-color:DarkGray; border-radius: 5px;">
-            @include('users.errors')
-            @include('users.messages')
 
+<section style="display:flex; margin-top:50px;">
+    <div class="col-xs-6 col-sm-2" >
+        @include('users.error')
+        @include('users.message')
+    </div>
+</section>
+        
+    <div  style="display:flex; justify-content:center; margin-top:10px;">
+        <div class="col-xs-6 col-sm-2" style="background-color:DarkGray; border-radius: 5px;">
             <p style="text-align:center;">ایمیل خود را وارد کنید</p><br>
 
             <form action="{{ 'login' }}" method="POST">
@@ -22,12 +27,5 @@
             </form>
 
         </div>
-    </div><br>
-
-    <section style="display:flex; justify-content:center;">
-
-        <button class="btn btn-warning col-xs-3 col-sm-2" style="text-align:center"
-            onclick="location.href='{{ 'register' }}'; ">عضویت</button>
-
-    </section>
+    </div>
 @endsection

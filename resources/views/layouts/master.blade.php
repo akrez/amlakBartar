@@ -19,10 +19,8 @@
     crossorigin=""></script>
 </head>
 
-<body class="container-fluid">
-    <div  class="container">
+<body class="container-fluid" style =" background: url('assets/images/house.jpg') no-repeat bottom fixed; background-color:rgb(176, 213, 239);">
         @yield('content')
-    </div>
                                                                                           
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>

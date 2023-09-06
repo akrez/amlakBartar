@@ -1,8 +1,12 @@
 <?php
 
-namespace Anisra\AmlakBartar;
+namespace AmlakBartar;
 
 use Jenssegers\Blade\Blade as LaravelBlade;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 
 class HomeController
 {
@@ -25,10 +29,49 @@ class HomeController
 
     function loggedIn()
     {
-        if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
+        if (isset($_SESSION['email']) && !empty($_SESSION['email'])) {
             return true;
         } else {
             return false;
         }
+    }
+
+    function home()
+    {
+        $this->render('users/home');
+    }
+
+    public  function sendEmail($to, $code)
+    {
+        
+        $mail = new PHPMailer(true);
+
+        $mail->isSMTP();
+        $mail->Host = "smtp.codexworld.com";
+        $mail->SMTPAuth = true;
+        $mail->Username = "user@codexworld.com";
+        $mail->Password = "demo.user@pass";
+        $mail->SMTPSecure = "ssl";
+        $mail->Port = 465;
+        
+       
+
+        $mail->setFrom('sender@codexworld.com', 'CodexWorld');
+
+        $mail->addAddress($to);
+
+        $mail->isHTML(true);
+
+        $mail->Subject = 'کد ورود';
+        $mail->Body = "کد ورود شما.'$code' می باشد ";
+        
+        try {
+            $mail->send();
+            $msg = " کد ورود برای ایمیل شما فرستاده شد ";
+            } catch (Exception $e) {
+            $msg = "خطایی رخ داده است:  " . $mail->ErrorInfo;
+        }
+
+        return $msg;
     }
 }
