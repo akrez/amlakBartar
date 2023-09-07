@@ -12,8 +12,8 @@
     <div style="display:flex; justify-content:center; margin-top:10px;">
         <div class="form col-xs-8 col-sm-10" style="background-color:DarkGray; border-radius: 5px;">
             <h4>
-                <p style="text-align:center;">ثبت ملک جدید</p>
-            </h4><br>
+                <p style="text-align:center;">ویرایش ملک</p>
+            </h4>
 
             <form action="{{ 'melkUpdate' }}" method="POST" enctype="multipart/form-data">
                 <div class="form col-xs-8 col-sm-5" style="background-color:DarkGray ;">
@@ -89,7 +89,15 @@
 
                     <div class="row form-group">
                         <p style="text-align:center;">افزودن تصاویر ملک</p>
-                        <input type="file" name="image" class="form-control">
+                        <input type="file" name="image" class="form-control"><br>
+                            @if($images)                        
+                               
+                                @foreach($images as $image)
+                                    <div class="col-sm-3 thumbnail">
+                                        <img src="assets/images/{{$image->image}}" width="150" height="90">
+                                    </div>
+                                @endforeach
+                            @endif
                     </div>
 
                     <div class="row form-group">

@@ -203,7 +203,8 @@ class AuthController extends HomeController
             $name = trim($_POST['name']);
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
-           
+            $password = md5($password);
+
             User::where('email',$_SESSION['email'])->update([
             'name' => $name,
             'email' => $email,

@@ -100,7 +100,10 @@ class MelkController extends HomeController
                 $location = "";
             }
 
-            $melks = Melk::firstWhere('Address',$Address);
+            $melks = Melk::firstWhere([
+                ['Address', $Address],
+                ['owner', $_SESSION['name']]
+                ]);
             if($melks){
                 $_SESSION['error'] = ' ملک  ' . $Address . '  قبلا ثبت شده است';
                 $this->render('users/melk');
@@ -121,33 +124,36 @@ class MelkController extends HomeController
                     'Sell_rent' => $Sell_rent,
                     'location' => $location
                 ]);
-                if (!empty($_FILES['image']['name'])) {
-                    $imageName = $_FILES['image']['name'];
-                    $imageType = $_FILES['image']['type'];
-                    $tmp_name = $_FILES['image']['tmp_name'];
-                    $dir = 'assets/images/';
-                    $offset = 0;
-                    while ($strpos = strpos($imageName, '.', $offset)) {
-                        $offset = $strpos + 1;
-                        $extension = strtolower(substr($imageName, $offset));
+                if (!empty(array_filter($_FILES['images']['name']))) {
+                    $results = Melk::where('Address',$Address)->get();
+                    foreach($results as $result){
+                        $melk_id = $result->id;
                     }
-                    if (($extension == 'jpg' || $extension == 'jpeg') && $imageType == 'image/jpeg') {
-                        if (move_uploaded_file($tmp_name, $dir . $imageName)) {
-                            $melk_id = Melk::where('Address',$Address)->get('id');
-                            Image::where('melk_id',$melk_id)->insert([
-                                'melk_id' => $melk_id,
-                                'image' => $imageName,
-                            ]);
+                    foreach($_FILES['images']['name'] as $id=>$val){
 
-                            $_SESSION['message'] = 'ملک شما با موفقیت ثبت شد';
-                           
-
+                        $imageName = $_FILES['images']['name'][$id];
+                        $imageType = $_FILES['images']['type'][$id];
+                        $tmp_name = $_FILES['images']['tmp_name'][$id];
+                        $dir = 'assets/images/';
+                        $offset = 0;
+                        while ($strpos = strpos($imageName, '.', $offset)) {
+                            $offset = $strpos + 1;
+                            $extension = strtolower(substr($imageName, $offset));
+                        }
+                        if (($extension == 'jpg' || $extension == 'jpeg') && $imageType == 'image/jpeg') {
+                            if (move_uploaded_file($tmp_name, $dir . $imageName)) {
+                                Image::insert([
+                                    'melk_id' => $melk_id,
+                                    'image' => $imageName,
+                                ]);
+                            }
+                        } else {
+                            $_SESSION['error'] = 'تصویر باید از نوع jpg/jpeg باشد';
                             $this->render('users/melk');
                         }
-                    } else {
-                        $_SESSION['error'] = 'تصویر باید از نوع jpg/jpeg باشد';
-                        $this->render('users/melk');
                     }
+                    $_SESSION['message'] = 'ملک شما با موفقیت ثبت شد';
+                    $this->render('users/melk');
                 } else {
                     $_SESSION['message'] = 'ملک شما با موفقیت ثبت شد';
                     $this->render('users/melk');
@@ -173,10 +179,12 @@ class MelkController extends HomeController
 
     public function melkEdit()
     {
-        $melks = melk::where('owner',$_SESSION['name'])->get();
+        $Address = $_POST['Address'];
+        $melks = melk::where('Address',$Address)->get();
         foreach($melks as $melk){
             $_SESSION['error'] = 0;
             $_SESSION['message'] = 0;
+            $melk_id = $melk->id;
             $_SESSION['owner'] =  $melk->owner;
             $_SESSION['phone'] =  $melk->phone;
             $_SESSION['Address'] =  $melk->Address;
@@ -186,8 +194,15 @@ class MelkController extends HomeController
             $_SESSION['Floors'] =  $melk->Floors;
             $_SESSION['units'] =  $melk->units;
             $_SESSION['Floor'] =  $melk->Floor;
+            $_SESSION['Elevator'] =  $melk->Elevator;
+            $_SESSION['Parking'] =  $melk->Parking;
+            $_SESSION['Sell_rent'] =  $melk->Sell_rent;
+            $_SESSION['location'] =  $melk->location;
+            
         }
-        $this->render('users/melkEdit');   
+        $images = Image::where('melk_id',$melk_id)->get();
+        
+        $this->render('users/melkEdit', compact('images'));   
     }
 
     public function melkUpdate()

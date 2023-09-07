@@ -8,9 +8,6 @@
 <section  style="display:flex; margin-top:50px; justify-content:center;">
                     <div class="form col-xs-8 col-sm-10" style="background-color:DarkGray; border-radius: 5px;">
                         @if($melks)                        
-                            <div class="page-header">
-                                <h4><p>ویرایش ملک</p></h4>
-                            </div>
                                 <table class="table table-striped table-bordered table-hover" style="text-align:center;">
                                     <thead>
                                         <tr class="alert alert-warning">
@@ -30,7 +27,12 @@
                                                 <td>{{$melk->Address}}</td>
                                                 <td>{{$melk->Construction}}</td>
                                                 <td>{{$melk->Meterage}}</td>
-                                                <td><a href="{{'melkEdit'}}">ویرایش</a></td>
+                                                <td>
+                                                <form action="{{ 'melkEdit' }}" method="POST">
+                                                    <input type="hidden" name="Address" value="{{$melk->Address}}">
+                                                    <input type="submit" value="ویرایش" class="btn-primary">
+                                                </form>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

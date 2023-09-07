@@ -89,7 +89,7 @@
 
                     <div class="row form-group">
                         <p style="text-align:center;">افزودن تصاویر ملک</p>
-                        <input type="file" name="image" class="form-control">
+                        <input type="file" name="images[]"  class="form-control" multiple>
                     </div>
 
                     <div class="row form-group">

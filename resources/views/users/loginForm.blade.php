@@ -5,11 +5,9 @@
 
 @section('content')
 
-<section style="display:flex; margin-top:50px;">
-    <div class="col-xs-6 col-sm-2" >
+<section style="display:flex; margin-top:50px; justify-content:center;">
         @include('users.error')
         @include('users.message')
-    </div>
 </section>
         
     <div  style="display:flex; justify-content:center; margin-top:10px;">

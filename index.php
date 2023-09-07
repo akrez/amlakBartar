@@ -33,7 +33,7 @@ $app->post('/store', 'RegisterController@store');
 $app->get('/amlakbartar', 'MelkController@amlakbartar');
 $app->get('/melk', 'MelkController@melk');
 $app->get('/melkList', 'MelkController@melkList');
-$app->get('/melkEdit', 'MelkController@melkEdit');
+$app->post('/melkEdit', 'MelkController@melkEdit');
 $app->post('/melkStore', 'MelkController@melkStore');
 $app->post('/melkUpdate', 'MelkController@melkUpdate');
 $app->get('/comments', 'MelkController@comments');
